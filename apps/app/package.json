@@ -1,0 +1,21 @@
+{
+  "name": "@cultivation/app",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@cultivation/battle": "workspace:*",
+    "@cultivation/event": "workspace:*",
+    "@cultivation/feed": "workspace:*",
+    "pinia": "^2.3.0",
+    "vue": "^3.5.0",
+    "vue-router": "^5.0.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.0",
+    "typescript": "~5.7.0",
+    "vite": "^6.2.0"
+  }
+}

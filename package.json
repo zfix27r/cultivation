@@ -1,0 +1,13 @@
+{
+  "name": "cultivation",
+  "private": true,
+  "scripts": {
+    "dev:app": "pnpm --filter @cultivation/app dev",
+    "dev:battle": "pnpm --filter @cultivation/battle dev",
+    "dev:feed": "pnpm --filter @cultivation/feed dev",
+    "dev:event": "pnpm --filter @cultivation/event dev"
+  },
+  "devDependencies": {
+    "sass-embedded": "^1.99.0"
+  }
+}

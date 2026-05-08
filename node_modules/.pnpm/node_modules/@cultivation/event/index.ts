@@ -1,0 +1,5 @@
+export { default as EventComponent } from './src/ui/EventComponent.vue'
+export { EventType } from './src/data/EventType'
+export type { EventData } from './src/data/EventData'
+export type { EventPriority } from './src/data/EventPriority'
+export { useEventStore } from './src/ui/useEventStore'

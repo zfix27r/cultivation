@@ -1,0 +1,73 @@
+import type { EnemyEntity } from '@/server/database/entities/EnemyEntity'
+
+export const EnemyDatabase: [EnemyEntity] = [
+    {
+      id: 1,
+      level: 1,
+      name: 'Гоблин-разбойник',
+      health: 50,
+      maxHealth: 50,
+      attack: 8,
+      defense: 2,
+      rewardId: 1,
+    },
+    {
+      id: 2,
+      level:1,
+      name: 'Зеленый слизень',
+      health: 40,
+      maxHealth: 40,
+      attack: 5,
+      defense: 1,
+      rewardId: 'reward_slime',
+    },
+    {
+      id: 'skeleton_1',
+      name: 'Скелет-воин',
+      health: 60,
+      maxHealth: 60,
+      attack: 10,
+      defense: 3,
+      rewardId: 'reward_skeleton',
+    },
+  ],
+  level2: [
+    {
+      id: 'goblin_2',
+      name: 'Гоблин-шаман',
+      health: 70,
+      maxHealth: 70,
+      attack: 12,
+      defense: 4,
+      rewardId: 'reward_goblin_shaman',
+    },
+    {
+      id: 'wolf_1',
+      name: 'Лесной волк',
+      health: 80,
+      maxHealth: 80,
+      attack: 15,
+      defense: 5,
+      rewardId: 'reward_wolf',
+    },
+  ],
+  bosses: [
+    {
+      id: 'boss_goblin_king',
+      name: 'Король гоблинов',
+      health: 200,
+      maxHealth: 200,
+      attack: 25,
+      defense: 10,
+      rewardId: 'reward_boss_goblin',
+    },
+    {
+      id: 'boss_dragon',
+      name: 'Молодой дракон',
+      health: 500,
+      maxHealth: 500,
+      attack: 40,
+      defense: 20,
+      rewardId: 'reward_boss_dragon',
+    },
+  ],]

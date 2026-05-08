@@ -1,0 +1,270 @@
+﻿
+
+// ====== index.html ======
+
+<!DOCTYPE html>
+<html>
+<head><title>DAO</title></head>
+<body>
+  <div id="app"></div>
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>
+
+
+// ====== package.json ======
+
+{
+  "name": "@cultivation/app",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@cultivation/battle": "workspace:*",
+    "@cultivation/event": "workspace:*",
+    "@cultivation/feed": "workspace:*",
+    "pinia": "^2.3.0",
+    "vue": "^3.5.0",
+    "vue-router": "^5.0.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.0",
+    "typescript": "~5.7.0",
+    "vite": "^6.2.0"
+  }
+}
+
+
+// ====== tsconfig.json ======
+
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue"]
+}
+
+
+// ====== vite.config.ts ======
+
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  server: { port: 3000 },
+  resolve: {
+    alias: {
+      '@': '/src'
+    }
+  },
+})
+
+
+// ====== src/App.vue ======
+
+<script setup lang="ts">
+import { RouterView } from 'vue-router'
+</script>
+
+<template>
+  <RouterView />
+</template>
+
+<style lang="scss">
+:root {
+  --padding-small: 4px;
+
+  --flex-gap-medium: 8px;
+}
+
+html,
+body {
+  height: 100%;
+  margin: auto;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: white;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+</style>
+
+
+// ====== src/main.ts ======
+
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+
+import { useFeedStore } from '@cultivation/feed'
+import { useEventStore } from '@cultivation/event'
+
+import './styles/sprite/base.css'
+
+import router from './router'
+import App from './App.vue'
+
+const app = createApp(App)
+const pinia = createPinia()
+
+app.use(pinia)
+app.use(router)
+app.mount('#app')
+
+// Инициализация модулей
+const feedStore = useFeedStore()
+feedStore.add({
+  text: '🎮 Игра запущена',
+  timestamp: new Date().toLocaleTimeString()
+})
+
+const eventStore = useEventStore()
+eventStore.add({
+  type: 'battle',
+  priority: 1,
+  duration: 0,
+  icon: 'battle',
+  title: '⚔️ Битва',
+  description: 'Гоблин-разбойник преграждает путь',
+})
+
+
+// ====== src/router.ts ======
+
+import { createRouter, createWebHistory } from 'vue-router'
+
+const router = createRouter({
+  history: createWebHistory('/'),
+  routes: [
+    {
+      path: '/',
+      name: 'game',
+      component: () => import('./pages/GamePage.vue'),
+      meta: { title: 'Игра' },
+    },
+  ],
+})
+
+router.afterEach((to) => {
+  document.title = `Культиватор | ${to.meta.title || 'Игра'}`
+})
+
+export default router
+
+
+// ====== src/pages/GamePage.vue ======
+
+<script setup lang="ts">
+import { FeedComponent } from '@cultivation/feed'
+import { EventComponent } from '@cultivation/event'
+
+const handleEventSelect = (eventId: string) => {
+  console.log('Выбрано событие:', eventId)
+}
+</script>
+
+<template>
+  <div class="game-page">
+    <header class="game-header">
+      <h1>🧘 Культиватор</h1>
+      <EventComponent @select="handleEventSelect" />
+    </header>
+
+    <main class="game-main">
+      <p>Здесь будет бой</p>
+    </main>
+
+    <footer class="game-footer">
+      <FeedComponent />
+    </footer>
+  </div>
+</template>
+
+<style scoped>
+.game-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+.game-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-size: 1.2rem;
+  color: #ffd700;
+  margin: 0;
+}
+
+.game-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.game-footer {
+  flex-shrink: 0;
+  margin-top: 16px;
+}
+</style>
+
+
+// ====== src/styles/sprite/base.css ======
+
+.icon {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  background-image: url('/sprite/base.png');
+  background-repeat: no-repeat;
+  background-size: 512px 867px;
+}
+
+.icon-death {
+  background-position: 0 0;
+}
+
+.icon-battle {
+  background-position: -288px 0;
+}
+
+.icon-arrow-up {
+  background-position: 0 -64px;
+}
+
+
+// ====== src/utils/getOrError.ts ======
+
+export function getOrError<T>(value: T | null | undefined, message?: string): T {
+  if (value == null) throw new Error(message ?? 'Value is null or undefined')
+  return value
+}
+
+
+// ====== src/utils/index.ts ======
+
+export { getOrError } from './getOrError'

@@ -1,0 +1,20 @@
+.icon {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  background-image: url('/sprite/base.png');
+  background-repeat: no-repeat;
+  background-size: 512px 867px;
+}
+
+.icon-death {
+  background-position: 0 0;
+}
+
+.icon-battle {
+  background-position: -288px 0;
+}
+
+.icon-arrow-up {
+  background-position: 0 -64px;
+}
